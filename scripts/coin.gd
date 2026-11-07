@@ -1,18 +1,11 @@
 extends Area2D
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
+@onready var game_manager = $"../../GameManager"
+@onready var coin_sound = $CoinSound
 
 func _on_body_entered(body: Node2D) -> void:
-	print("Collected coin")
+	hide()                
+	game_manager.add_score()                 
+	set_deferred("monitoring", false)      
+	coin_sound.play()
+	await coin_sound.finished
 	queue_free()
-	
-	
