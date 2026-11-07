@@ -2,7 +2,8 @@ extends Control
 
 
 func _on_play_button_pressed() -> void:
-	pass # Play the game
+	get_tree().change_scene_to_file("res://sences/level/training_level.tscn")
+
 
 
 
