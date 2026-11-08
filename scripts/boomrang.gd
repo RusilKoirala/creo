@@ -37,5 +37,5 @@ func _on_body_entered(body: Node) -> void:
 	if body == player:
 		return
 	if body.has_method("take_damage"):
-		body.take_damage(damage)
+		body.take_damage(damage, global_position)
 	returning = true   # hit something, come back
