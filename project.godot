@@ -22,6 +22,10 @@ buses/default_bus_layout="uid://dimx4c34mrxih"
 [autoload]
 
 Music="*uid://b56yi8yjg8qmj"
+SaveData="*uid://oxefagafxe48"
+SceneChanger="*uid://3jw0syyiam31"
+Settings="*res://scripts/settings.gd"
+PauseMenu="*res://scripts/pause_menu.gd"
 
 [display]
 
