@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://xor76gp66oqr" path="res://sences/coin.tscn" id="4_qi43j"]
 [ext_resource type="PackedScene" uid="uid://0xflbq3fm8tk" path="res://sences/goblin.tscn" id="6_mktrv"]
 [ext_resource type="FontFile" uid="uid://d12fgroe7dk04" path="res://assets/fonts/PixelOperator8.ttf" id="8_7j85o"]
+[ext_resource type="PackedScene" uid="uid://c63jbwdv2jpxw" path="res://sences/next_leveler.tscn" id="9_sf8fy"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_6bldm"]
 distance = -64.0
@@ -207,6 +208,9 @@ _data = {
 &"mvoe": SubResource("Animation_qi43j")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6bldm"]
+size = Vector2(91, 4)
+
 [node name="Game" type="Node2D" unique_id=503635460]
 
 [node name="GameManager" type="Node" parent="." unique_id=1354521410]
@@ -292,6 +296,14 @@ position = Vector2(203, -213)
 
 [node name="Goblin4" parent="Goblin" unique_id=335067874 instance=ExtResource("6_mktrv")]
 position = Vector2(-39, -178)
+
+[node name="NextLeveler" parent="." unique_id=1823848999 instance=ExtResource("9_sf8fy")]
+position = Vector2(-413, -215)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NextLeveler" unique_id=1459073497]
+position = Vector2(-2.5, 8)
+shape = SubResource("RectangleShape2D_6bldm")
 
 [node name="Labels" type="Node" parent="." unique_id=735061350]
 
