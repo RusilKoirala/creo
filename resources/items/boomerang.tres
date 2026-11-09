@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://dce6ltj2yvmcv"]
+
+[ext_resource type="Script" uid="uid://c3t50a8fnl5tt" path="res://scripts/items/item_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://f2qbsl8dnpww" path="res://assets/sprites/small_boomerang.png" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/boomerang_weapon.tscn" id="3"]
+
+[sub_resource type="AtlasTexture" id="icon_frame"]
+atlas = ExtResource("2")
+region = Rect2(0, 0, 16, 16)
+
+[resource]
+script = ExtResource("1")
+id = &"boomerang"
+display_name = "Boomerang"
+description = "Flies out and comes back."
+icon = SubResource("icon_frame")
+equip_scene = ExtResource("3")

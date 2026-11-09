@@ -1,0 +1,134 @@
+[gd_scene format=3 uid="uid://cojn0jh5p66al"]
+
+[ext_resource type="FontFile" uid="uid://d12fgroe7dk04" path="res://assets/fonts/PixelOperator8.ttf" id="1_8jrbs"]
+[ext_resource type="Script" uid="uid://keb363b8npdk" path="res://scripts/ui/level_menu.gd" id="menu_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6bldm"]
+bg_color = Color(0.41800115, 0.63466364, 0.73585033, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_co2rn"]
+bg_color = Color(0.9360345, 0.43324542, 7.70092e-07, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="LevelMenu" type="Control" unique_id=1506996541]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("menu_script")
+metadata/_edit_vertical_guides_ = [1606.0]
+metadata/_edit_horizontal_guides_ = [758.0]
+
+[node name="Panel" type="Panel" parent="." unique_id=761733815]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6bldm")
+
+[node name="Label" type="Label" parent="." unique_id=1330720793]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.025
+offset_left = -132.0
+offset_top = 40.0
+offset_right = 132.0
+offset_bottom = 87.8
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_8jrbs")
+theme_override_font_sizes/font_size = 64
+text = "Level"
+
+[node name="Node2D" type="Node2D" parent="." unique_id=1858845833]
+
+[node name="Button" type="Button" parent="Node2D" unique_id=1165426340]
+offset_left = 100.0
+offset_top = 159.0
+offset_right = 251.0
+offset_bottom = 201.0
+theme_override_fonts/font = ExtResource("1_8jrbs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_co2rn")
+text = "Level 1"
+
+[node name="Button2" type="Button" parent="Node2D" unique_id=483324247]
+offset_left = 349.0
+offset_top = 161.0
+offset_right = 501.0
+offset_bottom = 203.0
+theme_override_fonts/font = ExtResource("1_8jrbs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_co2rn")
+text = "Level 2"
+
+[node name="Button3" type="Button" parent="Node2D" unique_id=1635252990]
+offset_left = 599.0
+offset_top = 160.0
+offset_right = 751.0
+offset_bottom = 202.0
+theme_override_fonts/font = ExtResource("1_8jrbs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_co2rn")
+text = "Level 3
+"
+
+[node name="Button4" type="Button" parent="Node2D" unique_id=1329102009]
+offset_left = 849.0
+offset_top = 161.0
+offset_right = 1003.0
+offset_bottom = 203.0
+theme_override_fonts/font = ExtResource("1_8jrbs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_co2rn")
+text = "Level 4
+
+"
+
+[node name="Node2D2" type="Node2D" parent="." unique_id=1331702718]
+
+[node name="Button" type="Button" parent="Node2D2" unique_id=1909731127]
+offset_left = 100.0
+offset_top = 250.0
+offset_right = 251.0
+offset_bottom = 292.0
+theme_override_fonts/font = ExtResource("1_8jrbs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_co2rn")
+text = "Level 5"
+
+[node name="Button2" type="Button" parent="Node2D2" unique_id=387667042]
+offset_left = 349.0
+offset_top = 252.0
+offset_right = 501.0
+offset_bottom = 294.0
+theme_override_fonts/font = ExtResource("1_8jrbs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_co2rn")
+text = "Level 6"
+
+[node name="Button3" type="Button" parent="Node2D2" unique_id=35505855]
+offset_left = 599.0
+offset_top = 251.0
+offset_right = 751.0
+offset_bottom = 293.0
+theme_override_fonts/font = ExtResource("1_8jrbs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_co2rn")
+text = "Level 7
+"
+
+[node name="Button4" type="Button" parent="Node2D2" unique_id=886475667]
+offset_left = 849.0
+offset_top = 252.0
+offset_right = 1003.0
+offset_bottom = 294.0
+theme_override_fonts/font = ExtResource("1_8jrbs")
+theme_override_styles/normal = SubResource("StyleBoxFlat_co2rn")
+text = "Level 8
+"

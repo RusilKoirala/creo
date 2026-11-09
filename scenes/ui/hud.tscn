@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://dfur2e4dy2pmb"]
+
+[ext_resource type="Script" uid="uid://dufh7y32vvefo" path="res://scripts/ui/hud.gd" id="1_dludm"]
+[ext_resource type="Script" path="res://scripts/ui/inventory_bar.gd" id="2_invbar"]
+[ext_resource type="PackedScene" path="res://scenes/ui/item_slot.tscn" id="3_slot"]
+[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="4_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_co2rn"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6bldm"]
+bg_color = Color(0.8080462, 0.024617845, 0.028684484, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 11
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
+bg_color = Color(0.12, 0.1, 0.16, 0.9)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.86, 0.2, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+
+[node name="HUD" type="CanvasLayer" unique_id=642907181]
+script = ExtResource("1_dludm")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1559451032]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 17.0
+offset_top = -36.0
+offset_right = 117.0
+offset_bottom = -12.0
+grow_vertical = 0
+offset_transform_position = Vector2(16, 16)
+theme_override_styles/background = SubResource("StyleBoxFlat_co2rn")
+theme_override_styles/fill = SubResource("StyleBoxFlat_6bldm")
+show_percentage = false
+
+[node name="InventoryBar" type="HBoxContainer" parent="."]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 300.0
+offset_bottom = 84.0
+theme_override_constants/separation = 10
+script = ExtResource("2_invbar")
+slot_scene = ExtResource("3_slot")
+
+[node name="Toast" type="Label" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -260.0
+offset_top = 90.0
+offset_right = 260.0
+offset_bottom = 150.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.86, 0.2, 1)
+theme_override_fonts/font = ExtResource("4_font")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_toast")
+text = "Got Sword!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

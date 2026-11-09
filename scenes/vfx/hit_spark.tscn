@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/vfx/one_shot_effect.gd" id="1_r"]
+[ext_resource type="Texture2D" path="res://assets/sprites/vfx/slash_red.png" id="2_r"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3"]
+atlas = ExtResource("2_r")
+region = Rect2(0, 0, 110, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4"]
+atlas = ExtResource("2_r")
+region = Rect2(110, 0, 110, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5"]
+atlas = ExtResource("2_r")
+region = Rect2(220, 0, 110, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6"]
+atlas = ExtResource("2_r")
+region = Rect2(330, 0, 110, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7"]
+atlas = ExtResource("2_r")
+region = Rect2(440, 0, 110, 80)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8"]
+atlas = ExtResource("2_r")
+region = Rect2(550, 0, 110, 80)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_9"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8")
+}],
+"loop": false,
+"name": &"default",
+"speed": 30.0
+}]
+
+[node name="HitSpark" type="AnimatedSprite2D"]
+modulate = Color(1.6, 1.3, 1.3, 1)
+z_index = 10
+scale = Vector2(0.32, 0.32)
+sprite_frames = SubResource("SpriteFrames_9")
+script = ExtResource("1_r")

@@ -24,3 +24,7 @@ SOUNDS by Brackeys, Asbjørn Thirslund
 MUSIC by Brackeys, Sofia Thirslund
 
 FONTS by Jayvee Enaguas - HarvettFox96 - (https://www.dafont.com/pixel-operator.font?l[]=10&l[]=1)
+
+UNDEAD SPRITE PACK by @acewaydev & Darkeyed (@Darkeyed19) - CC BY 4.0 (used for the skeleton enemy, frames re-aligned)
+
+SWORD sprites + SWORD SLASHES: from the packs in assets/Sword.zip and assets/sprites/Sword Slashes.zip (add the authors here)
