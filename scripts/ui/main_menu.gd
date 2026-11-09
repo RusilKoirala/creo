@@ -1,7 +1,7 @@
 extends Control
 
 const UI = preload("res://scripts/ui/ui_style.gd")
-const OPTIONS = preload("res://scripts/ui/options_menu.gd")
+const OPTIONS = preload("res://scenes/ui/options_menu.tscn")
 
 @onready var title: Label = $Label
 @onready var box: VBoxContainer = $VBoxContainer
@@ -76,7 +76,7 @@ func _on_play_button_pressed() -> void:
 
 func _on_button_option_pressed() -> void:
 	box.hide()
-	var o = OPTIONS.new()
+	var o = OPTIONS.instantiate()
 	add_child(o)
 	o.closed.connect(func():
 		box.show()

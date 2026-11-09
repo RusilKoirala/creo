@@ -3,7 +3,7 @@ extends CanvasLayer
 # Autoload "PauseMenu": press Esc in any level to freeze the game.
 
 const UI = preload("res://scripts/ui/ui_style.gd")
-const OPTIONS = preload("res://scripts/ui/options_menu.gd")
+const OPTIONS = preload("res://scenes/ui/options_menu.tscn")
 
 var root: Control
 var buttons: VBoxContainer
@@ -79,7 +79,7 @@ func restart() -> void:
 
 func open_options() -> void:
 	buttons.hide()
-	options = OPTIONS.new()
+	options = OPTIONS.instantiate()
 	root.add_child(options)
 	options.closed.connect(func():
 		options = null
