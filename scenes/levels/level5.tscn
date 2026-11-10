@@ -392,7 +392,8 @@ position = Vector2(1944, -38)
 [node name="NextLeveler" parent="." unique_id=74213379 instance=ExtResource("11_4r5lo")]
 position = Vector2(2616, -32)
 collision_mask = 2
-level_number = 3
+level_number = 5
+next_scene = "res://scenes/ui/ending.tscn"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NextLeveler" unique_id=598940739]
 position = Vector2(0, -16)
