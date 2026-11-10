@@ -7,17 +7,28 @@ func _ready() -> void:
 	player.health_changed.connect(bar.set_health)
 
 
-# ---- "Got <item>!" popup (the Toast label lives in hud.tscn) ----
+
 @onready var toast: Label = $Toast
 
 func _enter_tree() -> void:
 	Inventory.item_added.connect(_on_item_added)
+	
+	Upgrades.unlocked.connect(_on_upgrade_unlocked)
+
+
 
 func _exit_tree() -> void:
 	Inventory.item_added.disconnect(_on_item_added)
+	Upgrades.unlocked.disconnect(_on_upgrade_unlocked)
 
 func _on_item_added(item: ItemData) -> void:
-	toast.text = "Got %s!\n%s" % [item.display_name, item.description]
+	show_toast("Got %s!" % item.display_name, item.description)
+
+func _on_upgrade_unlocked(id: StringName) -> void:
+	show_toast("%s unlocked!" % Upgrades.display_name(id), Upgrades.description(id))
+
+func show_toast(title: String, body := "") -> void:
+	toast.text = title if body == "" else "%s\n%s" % [title, body]
 	toast.show()
 	toast.pivot_offset = toast.size / 2
 	toast.modulate.a = 1.0

@@ -3,20 +3,23 @@ extends Control
 const UI = preload("res://scripts/ui/ui_style.gd")
 const COIN_TEXTURE = preload("res://assets/sprites/coin.png")
 
-# Level number -> scene. Add a line here when you make a new level.
+
+
+
 const LEVELS := {
 	1: "res://scenes/levels/level1.tscn",
 	2: "res://scenes/levels/level2.tscn",
 	3: "res://scenes/levels/level3.tscn",
 	4: "res://scenes/levels/level4.tscn",
+	5: "res://scenes/levels/level5.tscn",
 }
-const SLOTS := 8   # how many cards to show (extra ones say "soon")
+const SLOTS := 5 
 
 var cards: Array[Button] = []
 
 
 func _ready() -> void:
-	# the old hand-placed buttons are replaced by the grid below
+
 	$Node2D.hide()
 	$Node2D2.hide()
 
@@ -24,6 +27,7 @@ func _ready() -> void:
 	_build_grid()
 	_add_coin_counter()
 	_add_back_button()
+	_add_shop_button()
 
 	await get_tree().process_frame
 	UI.pop_in(cards, 0.05)
@@ -132,7 +136,7 @@ func _coin_icon(px: int) -> TextureRect:
 	var icon := TextureRect.new()
 	var atlas := AtlasTexture.new()
 	atlas.atlas = COIN_TEXTURE
-	atlas.region = Rect2(0, 0, 16, 16)   # first frame of the coin spin
+	atlas.region = Rect2(0, 0, 16, 16)  
 	icon.texture = atlas
 	icon.custom_minimum_size = Vector2(px, px)
 	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -141,7 +145,7 @@ func _coin_icon(px: int) -> TextureRect:
 	return icon
 
 
-# count coins in a level without spawning it
+
 func _coins_in_level(path: String) -> int:
 	var scene: PackedScene = load(path)
 	if scene == null:
@@ -193,6 +197,18 @@ func _add_back_button() -> void:
 	back.offset_right = 184
 	back.pressed.connect(_go_back)
 	add_child(back)
+
+
+func _add_shop_button() -> void:
+	var shop := UI.button("Shop >", 20)
+	shop.custom_minimum_size = Vector2(160, 50)
+	shop.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	shop.offset_left = -184
+	shop.offset_top = -74
+	shop.offset_bottom = -24
+	shop.offset_right = -24
+	shop.pressed.connect(func(): SceneChanger.change_scene("res://scenes/ui/shop_menu.tscn"))
+	add_child(shop)
 
 
 func _on_level_pressed(level: int) -> void:

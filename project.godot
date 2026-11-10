@@ -27,6 +27,8 @@ SceneChanger="*uid://3jw0syyiam31"
 Settings="*res://scripts/autoload/settings.gd"
 PauseMenu="*res://scripts/autoload/pause_menu.gd"
 Inventory="*res://scenes/autoload/inventory.tscn"
+Upgrades="*res://scripts/autoload/upgrades.gd"
+Checkpoint="*res://scripts/autoload/checkpoint.gd"
 
 [display]
 

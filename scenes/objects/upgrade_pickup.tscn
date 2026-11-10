@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/objects/upgrade_pickup.gd" id="1_r"]
+[ext_resource type="AudioStream" path="res://assets/sounds/power_up.wav" id="2_r"]
+[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="3_r"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4"]
+radius = 14.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7"]
+bg_color = Color(0.12, 0.1, 0.16, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 3.0
+content_margin_right = 3.0
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+
+[node name="UpgradePickup" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -10)
+shape = SubResource("CircleShape2D_4")
+
+[node name="Prompt" type="Label" parent="."]
+visible = false
+offset_left = -50.0
+offset_top = -42.0
+offset_right = 50.0
+offset_bottom = -32.0
+theme_override_fonts/font = ExtResource("3_r")
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_7")
+text = "[E] Upgrade"
+horizontal_alignment = 1
+
+[node name="PickupSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_r")
+bus = &"SFX"

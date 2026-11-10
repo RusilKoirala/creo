@@ -16,10 +16,23 @@ const COYOTE_TIME = 0.1      # can still jump a moment after walking off a ledge
 const JUMP_BUFFER = 0.12     # pressing jump right before landing still counts
 const JUMP_CUT = 0.45        # let go of jump early = short hop
 
+# upgrade stuff (see Upgrades autoload)
+const DOUBLE_JUMP_VELOCITY = -260.0
+const AIR_DASH_VELOCITY = 280.0
+const AIR_DASH_TIME = 0.18
+const DASH_STRIKE_DAMAGE = 1
+
 var invincible := false
 var dead := false
 
 var is_dashing := false
+var air_dashing := false
+var dash_timer := 0.0
+var ghost_timer := 0.0
+var air_jumps_left := 0
+var can_air_dash := false
+var dash_hitbox: Area2D
+var dash_hits: Array = []
 
 # weapon comes from the Inventory autoload, see _equip()
 @onready var weapon_holder: Node2D = $WeaponHolder
@@ -33,7 +46,8 @@ var fall_speed := 0.0
 
 signal health_changed(current, max_value)
 
-@export var max_health := 3
+@export var max_health := 3   ## before Extra Heart upgrades
+var base_health := 3
 var health := 3
 
 
@@ -41,13 +55,18 @@ var health := 3
 func _ready() -> void:
 	Engine.time_scale = 1.0   # in case we died during slow-mo
 	sprite.animation_finished.connect(_on_animation_finished)
+	base_health = max_health
+	max_health = base_health + Upgrades.level(&"heart")
 	health = max_health
+	_make_dash_hitbox()
+	Upgrades.changed.connect(_on_upgrade_changed)
 	health_changed.emit(health, max_health)
 	Inventory.equipped_changed.connect(_equip)
 	_equip(Inventory.current())
+	_spawn_at_checkpoint()
 
 func _physics_process(delta: float) -> void:
-	if not is_on_floor():
+	if not is_on_floor() and not air_dashing:
 		velocity += get_gravity() * delta
 
 	if dead:
@@ -58,6 +77,8 @@ func _physics_process(delta: float) -> void:
 	# coyote time + jump buffer timers
 	if is_on_floor():
 		coyote_timer = COYOTE_TIME
+		air_jumps_left = 1 if Upgrades.has(&"double_jump") else 0
+		can_air_dash = Upgrades.has(&"air_dash")
 	else:
 		coyote_timer -= delta
 
@@ -69,26 +90,27 @@ func _physics_process(delta: float) -> void:
 	_handle_weapon_input()
 
 	if jump_buffer_timer > 0 and coyote_timer > 0 and not is_dashing:
-		velocity.y = JUMP_VELOCITY
-		jump_buffer_timer = 0
-		coyote_timer = 0
-		jump_sound.pitch_scale = randf_range(0.95, 1.1)
-		jump_sound.play()
-		FX.squash(sprite, Vector2(0.8, 1.2))
+		_jump(JUMP_VELOCITY, randf_range(0.95, 1.1))
+	elif Input.is_action_just_pressed("jump") and coyote_timer <= 0 and air_jumps_left > 0 and not is_dashing:
+		# double jump
+		air_jumps_left -= 1
+		_jump(DOUBLE_JUMP_VELOCITY, 1.35)
+		_ghost(Color(1, 1, 1, 0.5))
 
 	# short hop when jump is released early
 	if Input.is_action_just_released("jump") and velocity.y < 0:
 		velocity.y *= JUMP_CUT
 
-	# Start dash
-	if Input.is_action_just_pressed("dash") and is_on_floor() and not is_dashing:
-		is_dashing = true
-		var facing := -1.0 if sprite.flip_h else 1.0
-		velocity.x = facing * DASH_VELOCITY
-		sprite.play("roll")
-		FX.squash(sprite, Vector2(1.25, 0.8))
+	# Start dash (ground roll, or air dash if unlocked)
+	if Input.is_action_just_pressed("dash") and not is_dashing:
+		if is_on_floor():
+			_start_dash(false)
+		elif can_air_dash:
+			can_air_dash = false
+			_start_dash(true)
 
 	if is_dashing:
+		_dash_process(delta)
 		_move()
 		return   # skip normal movement/animations until roll ends
 
@@ -118,8 +140,95 @@ func _move() -> void:
 	was_on_floor = is_on_floor()
 
 func _on_animation_finished() -> void:
-	if sprite.animation == "roll":
-		is_dashing = false
+	if sprite.animation == "roll" and not air_dashing:
+		_end_dash()
+
+
+func _jump(power: float, pitch: float) -> void:
+	velocity.y = power
+	jump_buffer_timer = 0
+	coyote_timer = 0
+	jump_sound.pitch_scale = pitch
+	jump_sound.play()
+	FX.squash(sprite, Vector2(0.8, 1.2))
+
+
+func _start_dash(in_air: bool) -> void:
+	is_dashing = true
+	air_dashing = in_air
+	# dash where you're holding, otherwise where you're facing
+	var dir := signf(Input.get_axis("move_left", "move_right"))
+	if dir == 0:
+		dir = -1.0 if sprite.flip_h else 1.0
+	sprite.flip_h = dir < 0
+	if in_air:
+		velocity = Vector2(dir * AIR_DASH_VELOCITY, 0)
+		dash_timer = AIR_DASH_TIME
+		FX.squash(sprite, Vector2(1.4, 0.7))
+		jump_sound.pitch_scale = 1.6
+		jump_sound.play()
+	else:
+		velocity.x = dir * DASH_VELOCITY
+		FX.squash(sprite, Vector2(1.25, 0.8))
+	sprite.play("roll")
+	ghost_timer = 0.0
+	dash_hits.clear()
+	dash_hitbox.set_deferred("monitoring", Upgrades.has(&"dash_strike"))
+
+
+func _dash_process(delta: float) -> void:
+	ghost_timer -= delta
+	if ghost_timer <= 0:
+		ghost_timer = 0.035
+		_ghost(Color(0.5, 0.8, 1.0, 0.55))
+	if air_dashing:
+		velocity.y = 0
+		dash_timer -= delta
+		if dash_timer <= 0 or is_on_wall():
+			velocity.x *= 0.5   # keep a bit of momentum
+			_end_dash()
+
+
+func _end_dash() -> void:
+	is_dashing = false
+	air_dashing = false
+	dash_hitbox.set_deferred("monitoring", false)
+	if not dead:
+		sprite.play("idle")
+
+
+# fading copy of the current frame, for dash trails
+func _ghost(color: Color) -> void:
+	var g := Sprite2D.new()
+	g.texture = sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	g.flip_h = sprite.flip_h
+	g.modulate = color
+	get_parent().add_child(g)
+	g.global_position = sprite.global_position
+	var t := g.create_tween()
+	t.tween_property(g, "modulate:a", 0.0, 0.25)
+	t.tween_callback(g.queue_free)
+
+
+# area that only listens while dashing with the Dash Strike upgrade
+func _make_dash_hitbox() -> void:
+	dash_hitbox = Area2D.new()
+	dash_hitbox.collision_layer = 0
+	dash_hitbox.collision_mask = 4   # enemies
+	dash_hitbox.monitoring = false
+	var shape := CollisionShape2D.new()
+	var circle := CircleShape2D.new()
+	circle.radius = 9.0
+	shape.shape = circle
+	shape.position = Vector2(0, -6)
+	dash_hitbox.add_child(shape)
+	add_child(dash_hitbox)
+	dash_hitbox.body_entered.connect(func(body: Node):
+		if body in dash_hits or not body.has_method("take_damage"):
+			return
+		dash_hits.append(body)
+		body.take_damage(DASH_STRIKE_DAMAGE, global_position)
+		FX.hit_stop(self, 0.05))
 
 
 func _handle_weapon_input() -> void:
@@ -147,6 +256,10 @@ func _equip(item: ItemData) -> void:
 func take_damage(amount: int, from := Vector2.INF) -> void:
 	if invincible or dead:
 		return
+	if is_dashing and Upgrades.has(&"dash_strike"):
+		return   # dash strike = i-frames
+	if is_dashing:
+		_end_dash()
 	health -= amount
 	hurt_sound.play()
 	health_changed.emit(health, max_health)
@@ -181,6 +294,7 @@ func die() -> void:
 	dead = true
 	invincible = true
 	is_dashing = false
+	air_dashing = false
 	sprite.play("hit")
 	sprite.modulate = Color(1, 0.4, 0.4)
 	velocity.y = -200
@@ -189,6 +303,29 @@ func die() -> void:
 	await get_tree().create_timer(0.8, true, false, true).timeout
 	Engine.time_scale = 1.0
 	get_tree().reload_current_scene()
+
+# died after touching a checkpoint: start there instead
+func _spawn_at_checkpoint() -> void:
+	if not Checkpoint.has_for(get_tree().current_scene):
+		return
+	Checkpoint.on_respawn()
+	global_position = Checkpoint.position
+	var cam := get_node_or_null("Camera2D") as Camera2D
+	if cam:
+		cam.reset_smoothing.call_deferred()
+
+
+# picked up an upgrade mid-level: works right away
+func _on_upgrade_changed(id: StringName) -> void:
+	match id:
+		&"heart":
+			max_health = base_health + Upgrades.level(&"heart")
+			heal(1)
+		&"double_jump":
+			air_jumps_left = 1
+		&"air_dash":
+			can_air_dash = true
+
 
 func heal(amount: int) -> void:
 	health = min(health + amount, max_health)
