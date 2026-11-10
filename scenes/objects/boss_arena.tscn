@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/objects/boss_arena.gd" id="1_arena"]
+[ext_resource type="PackedScene" path="res://scenes/objects/gate.tscn" id="2_gate"]
+
+[sub_resource type="RectangleShape2D" id="Rect_trigger"]
+size = Vector2(220, 80)
+
+[node name="BossArena" type="Area2D"]
+script = ExtResource("1_arena")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -40)
+shape = SubResource("Rect_trigger")
+debug_color = Color(0.7, 0.3, 1, 0.25)
+
+[node name="GateLeft" parent="." instance=ExtResource("2_gate")]
+position = Vector2(-140, 0)
+
+[node name="GateRight" parent="." instance=ExtResource("2_gate")]
+position = Vector2(140, 0)
