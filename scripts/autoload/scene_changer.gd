@@ -12,6 +12,7 @@ func _ready() -> void:
 	add_child(rect)
 
 func change_scene(path: String) -> void:
+	Checkpoint.clear()   
 	var tween = create_tween()
 	tween.tween_property(rect, "modulate:a", 1.0, 0.5)
 	await tween.finished

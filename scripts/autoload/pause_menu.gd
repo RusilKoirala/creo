@@ -75,6 +75,7 @@ func resume() -> void:
 func restart() -> void:
 	resume()
 	Engine.time_scale = 1.0
+	Checkpoint.clear()   # Restart = from the very beginning
 	get_tree().reload_current_scene()
 
 func open_options() -> void:

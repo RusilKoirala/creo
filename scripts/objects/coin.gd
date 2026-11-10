@@ -4,6 +4,7 @@ extends Area2D
 
 func _on_body_entered(body: Node2D) -> void:
 	set_deferred("monitoring", false)
+	Checkpoint.note_coin(self)
 	game_manager.add_score()
 	coin_sound.pitch_scale = randf_range(0.9, 1.2)
 	coin_sound.play()
