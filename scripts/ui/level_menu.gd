@@ -59,8 +59,8 @@ func _build_grid() -> void:
 	add_child(center)
 
 	var grid := GridContainer.new()
-	grid.columns = 4
-	grid.add_theme_constant_override("h_separation", 28)
+	grid.columns = SLOTS
+	grid.add_theme_constant_override("h_separation", 22)
 	grid.add_theme_constant_override("v_separation", 28)
 	center.add_child(grid)
 
@@ -76,7 +76,7 @@ func _make_card(level: int) -> Button:
 	var played := SaveData.best_coins.has(level)
 
 	var card := UI.button("", 20)
-	card.custom_minimum_size = Vector2(200, 130)
+	card.custom_minimum_size = Vector2(180, 130)
 	card.disabled = not unlocked
 	if played:
 		# finished levels get a green border
@@ -93,7 +93,7 @@ func _make_card(level: int) -> Button:
 	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(col)
 
-	var num := UI.label("LEVEL %d" % level, 26, UI.DARK)
+	var num := UI.label("LEVEL %d" % level, 22, UI.DARK)
 	num.remove_theme_color_override("font_shadow_color")
 	num.add_theme_constant_override("shadow_offset_y", 0)
 	col.add_child(num)
