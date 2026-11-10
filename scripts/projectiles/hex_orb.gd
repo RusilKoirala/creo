@@ -1,7 +1,6 @@
 extends Area2D
 
 
-
 @export var warn_time := 0.8
 @export var fall_speed := 260.0
 @export var damage := 1
@@ -25,7 +24,6 @@ func _ready() -> void:
 	add_child(shape)
 	body_entered.connect(_on_body_entered)
 
-	# find the floor below so the warning line stops there
 	var q := PhysicsRayQueryParameters2D.create(global_position, global_position + Vector2(0, 400), 1)
 	var hit := get_world_2d().direct_space_state.intersect_ray(q)
 	if hit:

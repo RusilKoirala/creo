@@ -1,10 +1,5 @@
 extends CharacterBody2D
 
-## Purple slime that keeps its distance and lobs goo at you.
-##   - sees you (in range + nothing in the way) -> swells up (telegraph) -> spits
-##   - you get too close -> hops away (unless there's a ledge behind it)
-##   - touching it hurts, like the goblin
-## Place it on high ground / behind gaps so the player has to work to reach it.
 
 const FX = preload("res://scripts/utils/fx.gd")
 const GOO = preload("res://scenes/projectiles/goo.tscn")
@@ -12,10 +7,10 @@ const GOO = preload("res://scenes/projectiles/goo.tscn")
 @export var health := 2
 @export var damage := 1
 @export var sight_range := 140.0
-@export var flee_range := 40.0       ## player closer than this = hop away
+@export var flee_range := 40.0
 @export var fire_cooldown := 1.8
-@export var windup := 0.4            ## swell-up time before spitting
-@export var flight_time := 0.75      ## how long goo takes to reach you (lower = flatter, faster shot)
+@export var windup := 0.4
+@export var flight_time := 0.75
 @export var hop_velocity := Vector2(70, -170)
 @export var hop_cooldown := 1.2
 
@@ -35,7 +30,7 @@ var player = null
 
 func _ready() -> void:
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
-	cooldown = randf_range(0.4, 1.0)   # so a group doesn't fire in sync
+	cooldown = randf_range(0.4, 1.0)
 
 
 func _physics_process(delta: float) -> void:
@@ -67,7 +62,6 @@ func _physics_process(delta: float) -> void:
 
 func _hop_away() -> void:
 	hop_timer = hop_cooldown
-	# don't jump off a cliff to get away
 	if not back_ray.is_colliding():
 		return
 	velocity = Vector2(-dir * hop_velocity.x, hop_velocity.y)
@@ -76,8 +70,7 @@ func _hop_away() -> void:
 
 func _spit() -> void:
 	winding = true
-	sprite.play("damage")   # the purple "puffed" frames read nicely as a windup
-	# swell + flash = "it's about to shoot"
+	sprite.play("damage")
 	var t := create_tween()
 	t.tween_property(sprite, "scale", Vector2(1.35, 1.35), windup).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	t.parallel().tween_property(sprite, "modulate", Color(1.8, 1.4, 2.2), windup)
@@ -96,7 +89,6 @@ func _spit() -> void:
 	var goo := GOO.instantiate()
 	var start := global_position + Vector2(dir * 6, -10)
 	var target: Vector2 = player.global_position + Vector2(0, -6)
-	# solve the arc so it lands where the player is standing right now
 	var g: float = ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)
 	var tt := flight_time
 	goo.velocity = Vector2((target.x - start.x) / tt, (target.y - start.y - 0.5 * g * tt * tt) / tt)
@@ -132,7 +124,7 @@ func take_damage(amount: int, from := Vector2.INF) -> void:
 		push = signf(global_position.x - from.x)
 	knockback = push * 150
 	velocity.y = -80
-	cooldown = maxf(cooldown, 0.5)   # getting hit delays its next shot
+	cooldown = maxf(cooldown, 0.5)
 	FX.hit_stop(self, 0.05)
 	FX.shake(self, 1.5, 0.15)
 	FX.squash(sprite, Vector2(1.3, 0.7))

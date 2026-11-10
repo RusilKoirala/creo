@@ -1,17 +1,9 @@
 extends Node
 
-## Autoload "Upgrades": permanent abilities. Bought in the shop with coins
-## (level menu > Shop) or handed out for free by an UpgradePickup.
-## Levels are saved in SaveData.upgrades.
-##
-## To add a new upgrade: add an entry to DEFS, then check
-## Upgrades.has(&"your_id") / Upgrades.level(&"your_id") wherever it matters.
 
 signal changed(id: StringName)
-signal unlocked(id: StringName)   # bought or picked up, the HUD shows a toast
+signal unlocked(id: StringName)
 
-## costs: one price per level, so its size is also the max level.
-## Set a cost to 0 to make that level pickup-only (can't be bought).
 const DEFS := {
 	&"double_jump": {
 		"name": "Double Jump",
@@ -70,7 +62,6 @@ func description(id: StringName) -> String:
 	return DEFS[id].desc
 
 
-## Price of the next level, or -1 if maxed / not for sale.
 func next_cost(id: StringName) -> int:
 	if is_maxed(id):
 		return -1
@@ -91,7 +82,6 @@ func buy(id: StringName) -> bool:
 	return true
 
 
-## Free level up (pickups, boss rewards).
 func grant(id: StringName) -> void:
 	if DEFS.has(id) and not is_maxed(id):
 		_level_up(id)

@@ -1,8 +1,6 @@
 class_name BossBar
 extends CanvasLayer
 
-## Big health bar at the top of the screen. The BossArena makes one when the
-## fight starts: BossBar.create(boss_name, max_hp) and calls set_health().
 
 const UI = preload("res://scripts/ui/ui_style.gd")
 
@@ -58,7 +56,6 @@ func _build(boss_name: String) -> void:
 		b.size = Vector2(590, 18)
 		root.add_child(b)
 
-	# slide in from the top
 	root.modulate.a = 0.0
 	var t := root.create_tween().set_parallel()
 	t.tween_property(root, "modulate:a", 1.0, 0.4)
@@ -86,7 +83,6 @@ func set_health(current: int, _max := -1) -> void:
 	var t := create_tween()
 	t.tween_interval(0.35)
 	t.tween_property(trail, "value", current, 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	# little jolt
 	var home := 24.0
 	var j := root.create_tween()
 	j.tween_property(root, "offset_top", home + 3, 0.04)

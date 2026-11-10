@@ -1,23 +1,12 @@
 class_name WizardBoss
 extends CharacterBody2D
 
-## YESSSS the final boss in finall arenaa oh yeee
-
-## Moves (i want to makeee it will be so coool):
-##   1. SLASH  it will be slashhh
-##   2. SMASH  close range with stickkk     
-##   3. LEAP  jump and hittt
-##   4. HEX    orb appear on head wowww
-
 
 signal health_changed(current: int, max_value: int)
 signal phase_changed(phase: int)
 signal defeated
 
 const FX = preload("res://scripts/utils/fx.gd")
-
-
-
 
 
 const SHOCKWAVE = preload("res://scenes/projectiles/shockwave.tscn")
@@ -95,15 +84,13 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	if leaping:
-		pass   # keep the jump arc
+		pass
 	elif move_dir != 0:
 		velocity.x = move_dir * run_speed * speed_mult
 	else:
 		velocity.x = move_toward(velocity.x, 0, 700 * delta)
 	move_and_slide()
 
-
-## fighty fightyyyy
 
 func start_fight() -> void:
 	if active or dead:
@@ -185,8 +172,6 @@ func _rest() -> void:
 	await _wait(phase_two_rest if phase == 2 else rest_time)
 
 
-# the cool moves it doess
-
 func _approach() -> void:
 	var t := 0.0
 	while t < chase_time and not dead and _player_alive():
@@ -243,7 +228,6 @@ func _leap() -> void:
 	if dead:
 		return
 
-	# SLAM
 	boom_sound.play()
 	FX.shake(self, 4.0, 0.35)
 	FX.squash(sprite, Vector2(1.3, 0.7))
@@ -254,7 +238,6 @@ func _leap() -> void:
 		if absf(d.x) < slam_radius and absf(d.y) < 20:
 			player.take_damage(1, global_position)
 
-	# punish window
 	dazed = true
 	_play("idle")
 	sprite.speed_scale = 0.4
@@ -332,14 +315,12 @@ func _enter_phase_two() -> void:
 	invulnerable = false
 
 
-
-
 func _on_frame_changed() -> void:
 	var f := sprite.frame
 	match sprite.animation:
 		&"attack1":
 			if f == 2:
-				_flash(Color(2.4, 2.4, 2.4))   # tell
+				_flash(Color(2.4, 2.4, 2.4))
 			if f == 3:
 				velocity.x = dir * lunge_speed
 				swing_sound.play()
@@ -380,10 +361,6 @@ func _spawn_wave(d: float) -> void:
 	w.global_position = global_position + Vector2(d * 16, 0)
 
 
-
-
-
-
 func take_damage(amount: int, _from := Vector2.INF) -> void:
 	if not active or dead or invulnerable:
 		return
@@ -404,7 +381,7 @@ func _die() -> void:
 	move_dir = 0
 	leaping = false
 	_set_hitbox(false)
-	collision_layer = 0   # player's weapons stop hitting the corpse
+	collision_layer = 0
 	sprite.speed_scale = 1.0
 	sprite.modulate = Color.WHITE
 	sprite.play("death")
@@ -414,7 +391,6 @@ func _die() -> void:
 	for p in get_tree().get_nodes_in_group("boss_projectile"):
 		p.queue_free()
 
-	# let the killing blow's hit-stop finish, then dramatic slow-mo
 	await get_tree().create_timer(0.12, true, false, true).timeout
 	boom_sound.play()
 	FX.shake(self, 5.0, 0.8)
@@ -426,12 +402,6 @@ func _die() -> void:
 	var t := create_tween()
 	t.tween_property(self, "modulate:a", 0.0, 1.0)
 	t.tween_callback(queue_free)
-
-
-
-
-
-
 
 
 func _wait(t: float) -> void:
@@ -467,15 +437,8 @@ func _play(anim: StringName) -> void:
 		sprite.play(anim)
 
 
-
-
-
 func _player_alive() -> bool:
 	return is_instance_valid(player) and not player.dead
-
-
-
-
 
 
 func _alive_minions() -> int:

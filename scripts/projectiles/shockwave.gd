@@ -1,7 +1,6 @@
 extends Area2D
 
 
-
 @export var speed := 130.0
 @export var max_distance := 220.0
 @export var damage := 1
@@ -38,7 +37,6 @@ func _physics_process(delta: float) -> void:
 
 
 func _draw() -> void:
-	# a few flickering flame tongues
 	for i in 4:
 		var x := (i - 1.5) * 3.0 * -dir
 		var h := height * (0.6 + 0.4 * sin(time * 25.0 + i * 1.7)) * (1.0 - i * 0.15)
