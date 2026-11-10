@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bak7fd34jttv4"]
 
-[ext_resource type="Script" path="res://scripts/ui/item_slot.gd" id="1_r"]
-[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_r"]
+[ext_resource type="Script" uid="uid://c768c0tv43nhu" path="res://scripts/ui/item_slot.gd" id="1_r"]
+[ext_resource type="FontFile" uid="uid://8vjrr6reu01w" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3"]
 bg_color = Color(0.95, 0.92, 0.85, 0.55)
@@ -29,14 +29,14 @@ corner_radius_bottom_left = 10
 shadow_color = Color(1, 0.8, 0.2, 0.35)
 shadow_size = 6
 
-[node name="ItemSlot" type="Panel"]
+[node name="ItemSlot" type="Panel" unique_id=1965302047]
 custom_minimum_size = Vector2(64, 64)
 theme_override_styles/panel = SubResource("StyleBoxFlat_3")
 script = ExtResource("1_r")
 normal_style = SubResource("StyleBoxFlat_3")
 selected_style = SubResource("StyleBoxFlat_4")
 
-[node name="Icon" type="TextureRect" parent="."]
+[node name="Icon" type="TextureRect" parent="." unique_id=137552432]
 texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
@@ -46,10 +46,12 @@ offset_left = 10.0
 offset_top = 10.0
 offset_right = -10.0
 offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Key" type="Label" parent="."]
+[node name="Key" type="Label" parent="." unique_id=978903354]
 layout_mode = 0
 offset_left = 6.0
 offset_top = 3.0

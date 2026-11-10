@@ -2,7 +2,7 @@ extends Area2D
 
 @onready var timer = $Timer
 @export var completes_tutorial := false
-@export var level_number := 0   # 0 = training, 1 = level 1, ...
+@export var level_number := 0  
 
 var done := false
 

@@ -1,10 +1,5 @@
 extends RefCounted
 
-# Little helpers that make hits and pickups feel juicy.
-# Call from anywhere: FX.shake(self), FX.hit_stop(self)
-
-
-# Wiggle the active camera, fading out over `duration`.
 static func shake(node: Node, strength := 2.0, duration := 0.2) -> void:
 	var cam := node.get_viewport().get_camera_2d()
 	if cam == null:
@@ -13,7 +8,7 @@ static func shake(node: Node, strength := 2.0, duration := 0.2) -> void:
 		cam.set_meta("base_offset", cam.offset)
 	var base: Vector2 = cam.get_meta("base_offset")
 
-	# stop an older shake so they don't fight
+	
 	if cam.has_meta("shake_tween"):
 		var old: Tween = cam.get_meta("shake_tween")
 		if old and old.is_valid():
@@ -29,7 +24,7 @@ static func shake(node: Node, strength := 2.0, duration := 0.2) -> void:
 	tween.tween_property(cam, "offset", base, 0.03)
 
 
-# Freeze the game for a split second so hits feel heavy.
+
 static func hit_stop(node: Node, duration := 0.06, slow := 0.05) -> void:
 	var tree := node.get_tree()
 	Engine.time_scale = slow
@@ -37,7 +32,7 @@ static func hit_stop(node: Node, duration := 0.06, slow := 0.05) -> void:
 	Engine.time_scale = 1.0
 
 
-# Quick stretch then bounce back to normal size.
+
 static func squash(sprite: Node2D, amount: Vector2, time := 0.15) -> void:
 	if not sprite.has_meta("base_scale"):
 		sprite.set_meta("base_scale", sprite.scale)

@@ -1,8 +1,6 @@
 extends PanelContainer
 
-## HUD health bar. Look lives in scenes/ui/health_bar.tscn — edit it there.
-## The red fill drops instantly on a hit and a pale "trail" bar drains
-## behind it, so you can see how much you just lost.
+
 
 @export var full_color := Color(0.4, 0.85, 0.35)
 @export var mid_color := Color(1, 0.75, 0.2)
@@ -21,7 +19,7 @@ var _home := Vector2.ZERO
 
 
 func _ready() -> void:
-	# own copy so recoloring doesn't touch the shared resource
+	
 	_fill_style = fill.get_theme_stylebox("fill").duplicate()
 	fill.add_theme_stylebox_override("fill", _fill_style)
 	ticks.draw.connect(_draw_ticks)
@@ -46,7 +44,7 @@ func set_health(current: int, max_value: int) -> void:
 		return
 
 	if current < fill.value:
-		# hit: snap fill, let the trail drain after a beat
+		
 		fill.value = current
 		var t := create_tween()
 		t.tween_interval(0.3)
@@ -55,7 +53,7 @@ func set_health(current: int, max_value: int) -> void:
 		_shake()
 		_flash(Color(1, 0.5, 0.5))
 	elif current > fill.value:
-		# heal: trail jumps, fill grows into it
+
 		trail.value = current
 		create_tween().tween_property(fill, "value", current, 0.3) \
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
@@ -83,7 +81,7 @@ func _flash(color: Color) -> void:
 	create_tween().tween_property(self, "self_modulate", Color.WHITE, 0.25)
 
 
-# Gentle throb on the last heart's worth of health.
+
 func _set_pulse(on: bool) -> void:
 	if _pulse:
 		_pulse.kill()
@@ -95,7 +93,7 @@ func _set_pulse(on: bool) -> void:
 		_pulse.tween_property(self, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_SINE)
 
 
-# Little dividers so each point of health reads as its own chunk.
+
 func _draw_ticks() -> void:
 	var w := ticks.size.x
 	var h := ticks.size.y

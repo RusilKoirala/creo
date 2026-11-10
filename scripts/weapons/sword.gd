@@ -1,16 +1,13 @@
 extends Weapon
 
-## Melee combo. Timing, hitboxes and the slash effect live in the
-## AnimationPlayer ("swing", "heavy", "spin") so tweak them in the editor.
-##   ground: swing -> heavy (press F again during a swing to chain)
-##   air:    spin attack that also gives a little float
+
 
 @export var swing_damage := 1
 @export var heavy_damage := 2
 @export var spin_damage := 1
 @export var knockback := 1.0
-@export var combo_window := 0.35   ## seconds after a swing where the next press chains
-@export var spin_float := -90.0    ## upward kick when spinning in the air
+@export var combo_window := 0.35   
+@export var spin_float := -90.0   
 @export var hit_effect: PackedScene
 
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -95,6 +92,6 @@ func _on_hitbox_body_entered(body: Node) -> void:
 		fx.scale.x *= facing()
 
 
-## Called from the "spin" animation so one spin can hit the same enemy twice.
+
 func _clear_hits() -> void:
 	hit_this_swing.clear()

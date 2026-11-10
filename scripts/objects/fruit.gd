@@ -10,7 +10,7 @@ var taken := false
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
-	time = randf() * TAU   # so fruits don't all bob in sync
+	time = randf() * TAU  
 
 func _process(delta: float) -> void:
 	time += delta * 3.0
@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if taken or not body.has_method("heal"):
 		return
-	# only eat it if we're actually hurt
+
 	if body.health >= body.max_health:
 		return
 	taken = true

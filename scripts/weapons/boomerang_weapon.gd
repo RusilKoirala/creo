@@ -1,6 +1,6 @@
 extends Weapon
 
-## Throws a projectile that flies out and comes back. Only one at a time.
+
 
 @export var projectile: PackedScene
 @export var spawn_offset := Vector2(12, -10)

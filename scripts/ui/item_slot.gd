@@ -1,6 +1,6 @@
 extends Panel
 
-## One square in the HUD inventory bar. Looks are set in item_slot.tscn.
+
 
 @export var normal_style: StyleBox
 @export var selected_style: StyleBox

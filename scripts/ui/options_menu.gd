@@ -1,8 +1,5 @@
 extends Control
 
-## Options screen. Layout and look live in scenes/ui/options_menu.tscn —
-## edit it in the editor. Used by main menu and pause menu:
-##   var o = OPTIONS_SCENE.instantiate(); add_child(o); o.closed.connect(...)
 
 signal closed
 
@@ -61,8 +58,6 @@ func _on_reset_pressed() -> void:
 		reset_btn.disabled = true
 
 
-# Scale + fade the whole panel. (Don't tween child positions — the
-# containers own those, which is what broke the old version.)
 func _pop_in() -> void:
 	panel.resized.connect(func(): panel.pivot_offset = panel.size / 2)
 	panel.modulate.a = 0.0

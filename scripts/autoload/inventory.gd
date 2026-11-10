@@ -1,8 +1,5 @@
 extends Node
 
-## Autoload "Inventory" (scenes/autoload/inventory.tscn).
-## Holds every item the player owns across levels. Starting items are set
-## in the inspector on the Inventory scene.
 
 signal items_changed
 signal equipped_changed(item: ItemData)

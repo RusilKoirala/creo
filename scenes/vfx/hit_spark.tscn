@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://ccluobko8rfkn"]
 
-[ext_resource type="Script" path="res://scripts/vfx/one_shot_effect.gd" id="1_r"]
-[ext_resource type="Texture2D" path="res://assets/sprites/vfx/slash_red.png" id="2_r"]
+[ext_resource type="Script" uid="uid://c4phxox0rjd1j" path="res://scripts/vfx/one_shot_effect.gd" id="1_r"]
+[ext_resource type="Texture2D" uid="uid://dbvvx16uli0ua" path="res://assets/sprites/vfx/slash_red.png" id="2_r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3"]
 atlas = ExtResource("2_r")
@@ -48,12 +48,12 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8")
 }],
-"loop": false,
+"loop": 0,
 "name": &"default",
 "speed": 30.0
 }]
 
-[node name="HitSpark" type="AnimatedSprite2D"]
+[node name="HitSpark" type="AnimatedSprite2D" unique_id=1197184442]
 modulate = Color(1.6, 1.3, 1.3, 1)
 z_index = 10
 scale = Vector2(0.32, 0.32)
